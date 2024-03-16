@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate  } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface Comic {
   id: string;
@@ -18,10 +18,12 @@ const ComicDetail: React.FC = () => {
   useEffect(() => {
     const fetchComicDetail = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/summaries/${comicId}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/summaries/${comicId}`
+        );
         setComic(response.data);
       } catch (error) {
-        console.error('Error fetching comic detail:', error);
+        console.error("Error fetching comic detail:", error);
       }
     };
 
@@ -37,12 +39,14 @@ const ComicDetail: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>{comic.title}</h1>
-      <p>{comic.synopsis}</p>
-      <p>ジャンル: {comic.genre}</p>
-      {/* その他の情報を表示 */}
-      <button onClick={handleBack}>戻る</button> {/* 戻るボタン */}
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col items-center">
+        <h1>{comic.title}</h1>
+        <p>{comic.synopsis}</p>
+        <p>ジャンル: {comic.genre}</p>
+        {/* その他の情報を表示 */}
+        <button onClick={handleBack}>戻る</button> {/* 戻るボタン */}
+      </div>
     </div>
   );
 };
