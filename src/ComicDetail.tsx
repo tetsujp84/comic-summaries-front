@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ComicDetail: React.FC = () => {
   const { comicId } = useParams();
   const [comic, setComic] = useState<Comic | null>(null);
   const [showSpoilers, setShowSpoilers] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchComicDetail = async () => {
@@ -22,10 +21,6 @@ const ComicDetail: React.FC = () => {
 
     fetchComicDetail();
   }, [comicId]);
-
-  const handleBack = () => {
-    navigate(-1); // 1つ前のページに戻る
-  };
 
   const toggleSpoilers = () => {
     setShowSpoilers(!showSpoilers);
