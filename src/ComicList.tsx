@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import LogoImage from "./assets/logo.png";
 
 interface Comic {
   id: string;
@@ -63,8 +64,8 @@ const ComicList: React.FC = () => {
     <div className="flex flex-col h-screen">
       <header className="bg-gray-800 text-white">
         <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
-          <a className="text-white text-3xl font-bold" href="/">
-            Logo
+          <a className="flex items-center" href="/">
+            <img src={LogoImage} alt="Logo" className="h-10"/>
           </a>
           <div className="flex space-x-4">
             <form onSubmit={handleSearch} className="flex space-x-2">
@@ -114,6 +115,7 @@ const ComicList: React.FC = () => {
                       className="w-full md:w-48 h-60 object-cover"
                       src={`${import.meta.env.VITE_REACT_APP_API_URL}/${comic.image_path}`}
                       alt={comic.title}
+                      loading="lazy"
                     />
                     <div className="p-4 flex flex-col justify-between flex-grow">
                       <div>
