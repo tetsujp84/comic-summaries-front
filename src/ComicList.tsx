@@ -113,7 +113,7 @@ const ComicList: React.FC = () => {
                   >
                     <img
                       className="w-full md:w-48 h-60 object-cover"
-                      src={`${import.meta.env.VITE_REACT_APP_API_URL}/${comic.image_path}`}
+                      src={comic.image_path}
                       alt={comic.title}
                       loading="lazy"
                     />

@@ -37,7 +37,7 @@ const ComicDetail: React.FC = () => {
           <div className="md:w-1/3 flex justify-center mb-4 md:mb-0">
             <img
               className="w-64 h-auto rounded-lg"
-              src={`${import.meta.env.VITE_REACT_APP_API_URL}/${comic.image_path}`}
+              src={comic.image_path}
               alt={comic.title}
               loading="lazy"
             />
