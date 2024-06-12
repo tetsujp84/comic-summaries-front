@@ -112,7 +112,7 @@ const ComicList: React.FC = () => {
                     key={comic.id}
                   >
                     <img
-                      className="w-full md:w-48 h-60 object-cover"
+                      className="w-full md:w-40 h-atuo object-cover"
                       src={comic.image_path}
                       alt={comic.title}
                       loading="lazy"
