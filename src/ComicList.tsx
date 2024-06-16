@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LogoImage from "./assets/logo.png";
 
 interface Comic {
@@ -15,8 +15,20 @@ interface Comic {
   image_path: string;
 }
 
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const ComicList: React.FC = () => {
   const [comics, setComics] = useState<Comic[]>([]);
+  const [totalComics, setTotalComics] = useState(0);
+  const page = parseInt(useQuery().get("page") || "1");
+  const itemPerPage = 10;
+  const totalPages = Math.ceil(totalComics / itemPerPage);
+  const maxPageNumbers = 10;
+  const startPage = Math.max(1, page - Math.floor(maxPageNumbers / 2));
+  const endPage = Math.min(totalPages, startPage + maxPageNumbers - 1);
+
   const [query, setQuery] = useState<string>("");
   const [placeholder, setPlaceholder] = useState<string>("タイトルを検索");
   const [error, setError] = useState<string | null>(null);
@@ -25,17 +37,29 @@ const ComicList: React.FC = () => {
     const fetchComics = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/summaries`
+          `${import.meta.env.VITE_REACT_APP_API_URL}/summaries?page=${page}`
         );
-        setComics(response.data);
+        setComics(response.data.comics);
         console.log("fetched", response.data);
       } catch (error) {
         console.error("Error fetching comics:", error);
       }
     };
 
+    const fetchTotalComics = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/count`
+        );
+        setTotalComics(response.data.count);
+      } catch (error) {
+        console.error("Error fetching total comics:", error);
+      }
+    };
+
     fetchComics();
-  }, []);
+    fetchTotalComics();
+  }, [page]);
 
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -47,9 +71,12 @@ const ComicList: React.FC = () => {
     }
 
     try {
-      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/search`, {
-        params: { title: query },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/search`,
+        {
+          params: { title: query },
+        }
+      );
       setComics(response.data);
       if (response.data.length === 0) {
         setError("検索結果が見つかりませんでした。");
@@ -65,7 +92,7 @@ const ComicList: React.FC = () => {
       <header className="bg-gray-800 text-white">
         <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
           <a className="flex items-center" href="/">
-            <img src={LogoImage} alt="Logo" className="h-10"/>
+            <img src={LogoImage} alt="Logo" className="h-10" />
           </a>
           <div className="flex space-x-4">
             <form onSubmit={handleSearch} className="flex space-x-2">
@@ -77,7 +104,10 @@ const ComicList: React.FC = () => {
                 className="p-2 border border-gray-300 rounded text-black"
                 onFocus={() => setPlaceholder("タイトルを検索")}
               />
-              <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white rounded px-4 py-2"
+              >
                 検索
               </button>
             </form>
@@ -136,6 +166,32 @@ const ComicList: React.FC = () => {
                   </li>
                 ))}
               </ul>
+            </div>
+            <div className="mt-4 flex space-x-2">
+              <Link
+                to={`/?page=${Math.max(1, page - 1)}`}
+                className={`px-4 py-2 ${page === 1? "text-gray-400 cursor-not-allowed": "bg-blue-500 text-white rounded"
+                }`}
+              >
+                ＜
+              </Link>
+              {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNumber) => (
+                <Link
+                  key={pageNumber}
+                  to={`/?page=${pageNumber}`}
+                  className={`px-4 py-2 ${pageNumber === page? "bg-blue-700 text-white": "bg-blue-500 text-white"
+                  }`}
+                >
+                  {pageNumber}
+                </Link>
+              ))}
+              <Link
+                to={`/?page=${Math.min(totalPages, page + 1)}`}
+                className={`px-4 py-2 ${page === totalPages? "text-gray-400 cursor-not-allowed": "bg-blue-500 text-white rounded"
+                }`}
+              >
+                ＞
+              </Link>
             </div>
           </div>
         </main>
