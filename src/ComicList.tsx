@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import LogoImage from "./assets/logo.png";
 
 interface Comic {
@@ -95,6 +95,9 @@ const ComicList: React.FC = () => {
             <img src={LogoImage} alt="Logo" className="h-10" />
           </a>
           <div className="flex space-x-4">
+            <Link className="text-gray-300 hover:text-white" to="/about">
+              このサイトについて
+            </Link>
             <form onSubmit={handleSearch} className="flex space-x-2">
               <input
                 type="text"
@@ -116,20 +119,6 @@ const ComicList: React.FC = () => {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <aside className="bg-gray-700 w-64 p-6 overflow-y-auto">
-          <nav>
-            <a className="block px-3 py-2 rounded hover:bg-gray-600" href="#">
-              Menu Item 1
-            </a>
-            <a className="block px-3 py-2 rounded hover:bg-gray-600" href="#">
-              Menu Item 2
-            </a>
-            <a className="block px-3 py-2 rounded hover:bg-gray-600" href="#">
-              Menu Item 3
-            </a>
-          </nav>
-        </aside>
-
         <main className="flex-1 overflow-y-auto p-6">
           <div className="flex flex-col items-center justify-center min-h-screen">
             <h1 className="text-2xl font-bold mb-6">漫画のあらすじ一覧</h1>
