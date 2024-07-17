@@ -2,18 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 
-interface Comic {
-  id: string;
-  title: string;
-  synopsis: string;
-  attraction: string;
-  conclusion: string;
-  genre: string;
-  characters: string;
-  author: string;
-  image_path: string;
-}
-
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };

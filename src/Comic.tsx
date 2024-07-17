@@ -1,5 +1,5 @@
 interface Comic {
-    id: string;
+    id: number;
     title: string;
     synopsis: string;
     genre: string;
